@@ -1,8 +1,8 @@
 # This Makefile will build a DLL and an application which makes use of the DLL.
 
 # Object files to create for the executable
-DLL_OBJS = obj/add.o obj/dllres.o
-EXE_OBJS = obj/addtest.o obj/exeres.o
+DLL_OBJS= obj/add.o obj/dllres.o
+EXE_OBJS= obj/addtest.o obj/exeres.o
 
 # Warnings to be raised by the C compiler
 WARNS = -Wall
@@ -27,14 +27,16 @@ EXE_LDFLAGS = -Llib -laddlib -s -Wl,--subsystem,console
 all: bin/${DLL} bin/${EXE}
 
 # Delete all build output
-clean:
-	if exist bin\* del /q bin\*
-	if exist lib\* del /q lib\*
-	if exist obj\* del /q obj\*
+clean: bin lib obj
+	test -f "$<"  && del /q "$<"
+	#if exist bin\* del /q bin\*
+	#if exist lib\* del /q lib\*
+	#if exist obj\* del /q obj\*
 
 # Create build output directories if they don't exist
 bin lib obj:
-	@if not exist "$@" mkdir "$@"
+#	@if not exist "$@" mkdir "$@"
+	test -f "$@"  ||  mkdir "$@"
 
 # Compile object files for DLL
 obj/add.o: src/add.c include/add.h | obj
